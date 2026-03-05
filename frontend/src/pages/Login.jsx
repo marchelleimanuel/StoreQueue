@@ -4,27 +4,23 @@ import { useNavigate } from "react-router-dom"
 const Login = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = () => {
-    console.log('ini username', username);
+  const onClickEnter = () => {
     console.log('ini password', password);
-    navigate('/home')
+    navigate('/admin')
   }
 
   return (
     <>
-      <div className="text-5xl font-bold">LOGIN</div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input type="text" id="username" className="border border-black" onChange={(e) => setUsername(e.target.value)}/>
+      <div className="min-h-screen flex justify-center items-center p-10 flex-col gap-10">
+        <div className="text-5xl font-bold">Admin's Authentication</div>
+        <div>
+          <label className="mr-2" htmlFor="password">Enter Password</label>
+          <input type="password" id="password" className="border border-black" onChange={(e) => setPassword(e.target.value)}/>
+        </div>
+        <button onClick={onClickEnter} className="border border-black cursor-pointer px-4 py-2 bg-blue-300">Enter</button>
       </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" className="border border-black" onChange={(e) => setPassword(e.target.value)}/>
-      </div>
-      <button onClick={onSubmit} className="border border-black cursor-pointer px-4 py-2 bg-blue-300">Login</button>
     </>
   )
 }
