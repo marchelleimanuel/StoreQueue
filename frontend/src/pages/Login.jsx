@@ -7,14 +7,19 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const onClickEnter = () => {
-    console.log('ini password', password);
-    navigate('/admin')
+    if(password !== 'admin') {
+      alert('Wrong credential')
+    }
+    else {
+      navigate('/admin')
+    }
   }
 
   return (
     <>
       <div className="min-h-screen flex justify-center items-center p-10 flex-col gap-10">
         <div className="text-5xl font-bold">Admin's Authentication</div>
+        <p className="text-red-500">**password** = admin</p>
         <div>
           <label className="mr-2" htmlFor="password">Enter Password</label>
           <input type="password" id="password" className="border border-black" onChange={(e) => setPassword(e.target.value)}/>

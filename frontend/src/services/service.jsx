@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL, GENERATE_PDF, NOMOR_ANTRIAN } from '../urlPath';
+import { BASE_URL, DAFTAR_ANTRIAN, GENERATE_PDF, NOMOR_ANTRIAN } from '../urlPath';
 
 
 export const getNomorAntrian = async () => {
@@ -33,9 +33,40 @@ export const ambilAntrian = async () => {
 export const generatePdf = (nomorAntrian) => {
     try {
         const params = new URLSearchParams({
-            nomorAntrian: nomorAntrian
+            nomorAntrian
         })
         window.open(`${BASE_URL + GENERATE_PDF}?${params.toString()}`);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getDaftarAntrian = async () => {
+    try {
+        const response = await axios({
+            method: 'get',
+            url: BASE_URL + DAFTAR_ANTRIAN
+        });
+
+        const { data } = response;
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateDaftarAntrian = async (queue_number) => {
+    try {
+        const response = await axios({
+            method: 'patch',
+            url: BASE_URL + DAFTAR_ANTRIAN,
+            data: {
+                queue_number
+            }
+        });
+
+        const { data } = response;
+        return data;
     } catch (error) {
         console.log(error);
     }
