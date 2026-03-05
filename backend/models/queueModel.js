@@ -6,9 +6,10 @@ import dbConnection from "../database/connection.js";
     // created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     // processed_at TIMESTAMP
 
-const queueModel = dbConnection.define('queues', {
+const Queue = dbConnection.define('queues', {
     queue_number: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
@@ -17,7 +18,8 @@ const queueModel = dbConnection.define('queues', {
         defaultValue: 'Waiting'
     },
     processed_at : {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     }},
     {
         updatedAt: false,
@@ -25,6 +27,6 @@ const queueModel = dbConnection.define('queues', {
     }
 )
 
-export default queueModel;
+export default Queue;
 
 
