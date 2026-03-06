@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { getDaftarAntrian, updateDaftarAntrian } from "../services/service";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+import { BASE_URL } from "../urlPath";
+
+const socket = io(BASE_URL);
 
 const Admin = () => {
   const navigate = useNavigate();
 
   const [daftarAntrian, setDaftarAntrian] = useState([]);
-  const [updated, setUpdated] = useState(false);
 
   const getData = async () => {
     try {
@@ -21,14 +24,16 @@ const Admin = () => {
 
   useEffect(() => {
     getData();
-  }, [updated]);
+
+    socket.on('daftarAntrian', (data) => {
+      setDaftarAntrian(data);
+    });
+
+  }, [daftarAntrian]);
 
   const onClickProcess = async (queue_number) => {
     try {
-      const response = await updateDaftarAntrian(queue_number);
-      if(response.response_message === 'SUCCESS') {
-        setUpdated(!updated);
-      }
+      await updateDaftarAntrian(queue_number);
     } catch (error) {
       console.log(error);
     }

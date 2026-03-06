@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { ambilAntrian, generatePdf, getNomorAntrian } from "../services/service";
+import { io } from "socket.io-client";          
+import { BASE_URL } from "../urlPath";           
+
+const socket = io(BASE_URL);
 
 const User = () => {
     const navigate = useNavigate();
@@ -27,14 +31,19 @@ const User = () => {
 
     useEffect(() => {
         getAntrian();
+
+        socket.on('nomorAntrian', (antrian) => {
+            setNomorAntrian(antrian);
+        })
+
     }, [nomorAntrian]);
 
     const onAmbilAntrian = async () => {
         try {
             const response = await ambilAntrian();
             if(response.response_message == 'SUCCESS') {
-                setNomorAntrian(response.data);
                 generatePdf(nomorAntrian);
+                setNomorAntrian(response.data+1);
             }
             else {
                 setNomorAntrian(0);

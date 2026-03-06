@@ -2,12 +2,12 @@ import { Sequelize } from "sequelize";
 import Queue from "../models/queueModel.js"
 
 export const getNomorAntrianController = async (req, res) => {
-    const dataAntrian = await Queue.count();
-    const antrian = dataAntrian + 1
+    const antrian = await Queue.findOne({ order: [['queue_number', 'DESC']] });
+    const nextAntrian = antrian ? antrian.queue_number + 1 : 1;
 
     return res.status(200).json({
         response_message: 'SUCCESS',
-        data: antrian
+        data: nextAntrian
     });
 }
 
@@ -16,6 +16,8 @@ export const createNomorAntrianController = async (req, res) => {
     const dataAntrian = await Queue.count();
     const antrianTerakhir = dataAntrian + 1
 
+    const io = req.app.get('io');
+    io.emit('nomorAntrian', antrianTerakhir);
 
     return res.status(200).json({
         response_message: 'SUCCESS',
@@ -28,6 +30,9 @@ export const getDaftarAntrianController = async (req, res) => {
         attributes: ['queue_number', 'status', 'created_at'],
         order: [['queue_number', 'ASC']]
     });
+
+    const io = req.app.get('io');
+    io.emit('daftarAntrian', daftarAntrian);
 
     return res.status(200).json({
         response_message: 'SUCCESS',
